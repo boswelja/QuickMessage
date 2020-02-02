@@ -9,6 +9,7 @@ import android.telephony.SmsManager
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.boswelja.quickmessage.MessageHelper.CONTACT_LOOKUP_KEY
 import com.boswelja.quickmessage.MessageHelper.getContactInfo
 
 class MainFragment :
@@ -25,15 +26,15 @@ class MainFragment :
 
     override fun onPreferenceClick(preference: Preference?): Boolean {
         return when (preference?.key) {
-            "pick_contact_preference_key" -> {
+            CONTACT_PICKER_PREFERENCE_KEY -> {
                 Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI).also {
                     startActivityForResult(it, 1001)
                 }
                 true
             }
-            "send_message_key" -> {
+            SEND_MESSAGE_KEY -> {
                 if (!contact?.normalizedNumber.isNullOrEmpty()) {
-                    val message = preference.sharedPreferences.getString("message_key", "Hello from Quick Message!")
+                    val message = preference.sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!")
                     if (!message.isNullOrBlank()) {
                         SmsManager.getDefault().also {
                             it.sendTextMessage(
@@ -54,7 +55,7 @@ class MainFragment :
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         return when (preference?.key) {
-            "message_key" -> {
+            MESSAGE_PREFERENCE_KEY -> {
                 if (newValue is String && newValue.isNotEmpty()) {
                     sharedPreferences.edit().putString(preference.key, newValue).apply()
                     updateMessageSummary()
@@ -72,15 +73,15 @@ class MainFragment :
 
         addPreferencesFromResource(R.xml.main_preferences)
 
-        findPreference<Preference>("send_message_key")!!.apply {
+        findPreference<Preference>(SEND_MESSAGE_KEY)!!.apply {
             onPreferenceClickListener = this@MainFragment
         }
 
-        messageEditTextPreference = findPreference<EditTextPreference>("message_key")!!.apply {
+        messageEditTextPreference = findPreference<EditTextPreference>(MESSAGE_PREFERENCE_KEY)!!.apply {
             onPreferenceChangeListener = this@MainFragment
         }
 
-        contactPickerPreference = findPreference<Preference>("pick_contact_preference_key")!!.apply {
+        contactPickerPreference = findPreference<Preference>(CONTACT_PICKER_PREFERENCE_KEY)!!.apply {
             onPreferenceClickListener = this@MainFragment
         }
         contact = getContactInfo(context!!)
@@ -97,7 +98,7 @@ class MainFragment :
                     if (cursor?.moveToFirst() == true) {
                         val lookupKey = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.LOOKUP_KEY))
                         if (!lookupKey.isNullOrEmpty()) {
-                            sharedPreferences.edit().putString("contact_lookup_key", lookupKey).apply()
+                            sharedPreferences.edit().putString(CONTACT_LOOKUP_KEY, lookupKey).apply()
                         }
                     }
                     cursor?.close()
@@ -117,4 +118,9 @@ class MainFragment :
         contactPickerPreference.summary = "${contact?.name} (${contact?.normalizedNumber})"
     }
 
+    companion object {
+        private const val CONTACT_PICKER_PREFERENCE_KEY = "pick_contact_preference_key"
+        private const val MESSAGE_PREFERENCE_KEY = "message_key"
+        private const val SEND_MESSAGE_KEY = "send_message_key"
+    }
 }
