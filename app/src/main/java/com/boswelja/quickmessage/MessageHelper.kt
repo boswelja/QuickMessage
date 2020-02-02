@@ -2,6 +2,7 @@ package com.boswelja.quickmessage
 
 import android.content.Context
 import android.provider.ContactsContract
+import android.telephony.SmsManager
 import androidx.preference.PreferenceManager
 
 object MessageHelper {
@@ -31,5 +32,19 @@ object MessageHelper {
             cursor.close()
         }
         return contact
+    }
+
+    fun sendMessage(contact: Contact?, message: String?) {
+        if (contact != null && !message.isNullOrEmpty()) {
+            SmsManager.getDefault().also {
+                it.sendTextMessage(
+                    contact.normalizedNumber,
+                    null,
+                    message,
+                    null,
+                    null
+                )
+            }
+        }
     }
 }

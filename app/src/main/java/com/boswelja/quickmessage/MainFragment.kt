@@ -11,6 +11,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.boswelja.quickmessage.MessageHelper.CONTACT_LOOKUP_KEY
 import com.boswelja.quickmessage.MessageHelper.getContactInfo
+import com.boswelja.quickmessage.MessageHelper.sendMessage
 
 class MainFragment :
     PreferenceFragmentCompat(),
@@ -35,17 +36,7 @@ class MainFragment :
             SEND_MESSAGE_KEY -> {
                 if (!contact?.normalizedNumber.isNullOrEmpty()) {
                     val message = preference.sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!")
-                    if (!message.isNullOrBlank()) {
-                        SmsManager.getDefault().also {
-                            it.sendTextMessage(
-                                contact?.normalizedNumber,
-                                null,
-                                message,
-                                null,
-                                null
-                            )
-                        }
-                    }
+                    sendMessage(contact, message)
                 }
                 true
             }
