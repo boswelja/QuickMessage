@@ -9,6 +9,7 @@ import android.telephony.SmsManager
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.boswelja.quickmessage.MessageHelper.getContactInfo
 
 class MainFragment :
     PreferenceFragmentCompat(),
@@ -17,8 +18,7 @@ class MainFragment :
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var contactName: String = ""
-    private var contactNumber: String = ""
+    private var contact: Contact? = null
 
     private lateinit var contactPickerPreference: Preference
     private lateinit var messageEditTextPreference: EditTextPreference
@@ -32,12 +32,12 @@ class MainFragment :
                 true
             }
             "send_message_key" -> {
-                if (!contactNumber.isBlank() && contactNumber != "0") {
+                if (!contact?.normalizedNumber.isNullOrEmpty()) {
                     val message = preference.sharedPreferences.getString("message_key", "Hello from Quick Message!")
                     if (!message.isNullOrBlank()) {
                         SmsManager.getDefault().also {
                             it.sendTextMessage(
-                                contactNumber,
+                                contact?.normalizedNumber,
                                 null,
                                 message,
                                 null,
@@ -83,8 +83,9 @@ class MainFragment :
         contactPickerPreference = findPreference<Preference>("pick_contact_preference_key")!!.apply {
             onPreferenceClickListener = this@MainFragment
         }
-        updateContactInfo()
+        contact = getContactInfo(context!!)
         updateMessageSummary()
+        updateContactPickerSummary()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -100,25 +101,11 @@ class MainFragment :
                         }
                     }
                     cursor?.close()
-                    updateContactInfo()
+                    contact = getContactInfo(context!!)
+                    updateContactPickerSummary()
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
-    private fun updateContactInfo() {
-        val lookupKey = sharedPreferences.getString("contact_lookup_key", "")
-        if (!lookupKey.isNullOrEmpty()) {
-            val contactWhere = ContactsContract.Data.LOOKUP_KEY + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?"
-            val contactWhereParams = arrayOf(lookupKey, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-            val cursor = context?.contentResolver!!.query(ContactsContract.Data.CONTENT_URI, CONTACTS_PROJECTION, contactWhere, contactWhereParams, null)
-            if (cursor!!.count > 0 && cursor.moveToFirst()) {
-                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER))
-            }
-            cursor.close()
-            contactPickerPreference.summary = "$contactName ($contactNumber)"
         }
     }
 
@@ -126,11 +113,8 @@ class MainFragment :
         messageEditTextPreference.summary = sharedPreferences.getString(messageEditTextPreference.key, "Hello from Quick Message!")
     }
 
-    companion object {
-        private val CONTACTS_PROJECTION: Array<out String> = arrayOf(
-            ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
-            ContactsContract.Contacts.DISPLAY_NAME
-        )
+    private fun updateContactPickerSummary() {
+        contactPickerPreference.summary = "${contact?.name} (${contact?.normalizedNumber})"
     }
 
 }
