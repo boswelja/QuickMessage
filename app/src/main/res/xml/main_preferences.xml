@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.PreferenceCategory
+        android:title="Quick Message">
+
+        <androidx.preference.EditTextPreference
+            android:key="pick_contact_preference_key"
+            android:title="Send to"
+            android:defaultValue="0" />
+
+        <androidx.preference.EditTextPreference
+            android:defaultValue="Hello from Quick Message!"
+            android:key="message_key"
+            android:selectAllOnFocus="true"
+            android:title="Message to send" />
+
+        <androidx.preference.CheckBoxPreference
+            android:defaultValue="true"
+            android:key="require_confirmation_key"
+            android:title="Require Confirmation" />
+
+        <androidx.preference.Preference
+            android:key="send_message_key"
+            android:title="Send Message" />
+
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>
