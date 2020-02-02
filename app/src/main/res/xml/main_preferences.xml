@@ -4,10 +4,9 @@
     <androidx.preference.PreferenceCategory
         android:title="Quick Message">
 
-        <androidx.preference.EditTextPreference
+        <androidx.preference.Preference
             android:key="pick_contact_preference_key"
-            android:title="Send to"
-            android:defaultValue="0" />
+            android:title="Send to" />
 
         <androidx.preference.EditTextPreference
             android:defaultValue="Hello from Quick Message!"
