@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:windowLightStatusBar">@bool/lightSystemBars</item>
+        <item name="android:windowLightNavigationBar">@bool/lightSystemBars</item>
+        <item name="android:navigationBarColor">@color/navBarColor</item>
+    </style>
+</resources>
