@@ -13,11 +13,12 @@ object MessageHelper {
     )
 
     const val CONTACT_LOOKUP_KEY = "contact_lookup_key"
+    const val PHONE_NUMBER_KEY = "phone_number_key"
 
     fun getContactInfo(context: Context): Contact? {
         var contact: Contact? = null
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         try {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val lookupKey = sharedPreferences.getString(CONTACT_LOOKUP_KEY, "")
             if (!lookupKey.isNullOrEmpty()) {
                 val contactWhere = ContactsContract.Data.LOOKUP_KEY + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?"
@@ -28,12 +29,15 @@ object MessageHelper {
                 if (cursor!!.count > 0 && cursor.moveToFirst()) {
                     val contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                     val contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER))
-                    contact = Contact(contactName, contactNumber)
+                    contact = Contact(contactNumber, contactName)
                 }
                 cursor.close()
             }
         } catch (e: SecurityException) {
-            e.printStackTrace()
+            val phoneNumber = sharedPreferences.getString(PHONE_NUMBER_KEY, "")
+            if (!phoneNumber.isNullOrEmpty()) {
+                contact = Contact(phoneNumber)
+            }
         }
 
         return contact

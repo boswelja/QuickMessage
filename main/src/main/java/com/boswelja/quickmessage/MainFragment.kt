@@ -1,10 +1,13 @@
 package com.boswelja.quickmessage
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -28,8 +31,12 @@ class MainFragment :
     override fun onPreferenceClick(preference: Preference?): Boolean {
         return when (preference?.key) {
             CONTACT_PICKER_PREFERENCE_KEY -> {
-                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI).also {
-                    startActivityForResult(it, 1001)
+                if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI).also {
+                        startActivityForResult(it, 1001)
+                    }
+                } else {
+                    PhoneNumberEditTextDialog(context!!).createAndShow()
                 }
                 true
             }
@@ -125,7 +132,11 @@ class MainFragment :
     }
 
     private fun updateContactPickerSummary() {
-        contactPickerPreference.summary = "${contact?.name} (${contact?.normalizedNumber})"
+        if (!contact?.name.isNullOrEmpty()) {
+            contactPickerPreference.summary = "${contact?.name} (${contact?.normalizedNumber})"
+        } else {
+            contactPickerPreference.summary = contact?.normalizedNumber
+        }
     }
 
     companion object {
