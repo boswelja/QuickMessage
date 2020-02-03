@@ -42,7 +42,7 @@ class MainFragment :
                 true
             }
             SOURCE_CODE_KEY -> {
-                Intent(Intent.ACTION_VIEW, "https://github.com/boswelja/QuickMessage".toUri()).also {
+                Intent(Intent.ACTION_VIEW, getString(R.string.source_code_url).toUri()).also {
                     if (it.resolveActivity(activity!!.packageManager) != null) {
                         startActivity(it)
                     }
