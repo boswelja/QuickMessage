@@ -6,13 +6,15 @@
 
         <androidx.preference.Preference
             android:key="pick_contact_preference_key"
-            android:title="@string/pref_contact_picker_title" />
+            android:title="@string/pref_contact_picker_title"
+            android:icon="@drawable/pref_ic_contact_picker" />
 
         <androidx.preference.EditTextPreference
             android:defaultValue="Hello from Quick Message!"
             android:key="message_key"
             android:selectAllOnFocus="true"
-            android:title="@string/pref_edit_message_title" />
+            android:title="@string/pref_edit_message_title"
+            android:icon="@drawable/pref_ic_message" />
 
         <androidx.preference.CheckBoxPreference
             android:defaultValue="true"
@@ -21,7 +23,8 @@
 
         <androidx.preference.Preference
             android:key="send_message_key"
-            android:title="@string/pref_send_message_title" />
+            android:title="@string/pref_send_message_title"
+            android:icon="@drawable/pref_ic_send" />
 
     </androidx.preference.PreferenceCategory>
 
@@ -31,10 +34,13 @@
         <androidx.preference.Preference
             android:key="source_code_key"
             android:title="@string/pref_source_code_title"
-            android:summary="@string/source_code_url" />
+            android:summary="@string/source_code_url"
+            android:icon="@drawable/pref_ic_source_code" />
 
         <androidx.preference.Preference
             android:key="app_version_key"
-            android:title="@string/pref_app_version_title" />
+            android:title="@string/pref_app_version_title"
+            android:icon="@drawable/pref_ic_app_version" />
+
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>
