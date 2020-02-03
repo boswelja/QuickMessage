@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.telephony.SmsManager
 import androidx.core.net.toUri
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
