@@ -24,4 +24,17 @@
             android:title="Send Message" />
 
     </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="About">
+
+        <androidx.preference.Preference
+            android:key="source_code_key"
+            android:title="View Source Code"
+            android:summary="https://github.com/boswelja/QuickMessage" />
+
+        <androidx.preference.Preference
+            android:key="app_version_key"
+            android:title="App Version" />
+    </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

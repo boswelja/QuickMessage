@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.telephony.SmsManager
+import androidx.core.net.toUri
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -40,6 +41,14 @@ class MainFragment :
                 }
                 true
             }
+            SOURCE_CODE_KEY -> {
+                Intent(Intent.ACTION_VIEW, "https://github.com/boswelja/QuickMessage".toUri()).also {
+                    if (it.resolveActivity(activity!!.packageManager) != null) {
+                        startActivity(it)
+                    }
+                }
+                true
+            }
             else -> false
         }
     }
@@ -64,6 +73,10 @@ class MainFragment :
 
         addPreferencesFromResource(R.xml.main_preferences)
 
+        contact = getContactInfo(context!!)
+
+        initAboutSection()
+
         findPreference<Preference>(SEND_MESSAGE_KEY)!!.apply {
             onPreferenceClickListener = this@MainFragment
         }
@@ -75,7 +88,6 @@ class MainFragment :
         contactPickerPreference = findPreference<Preference>(CONTACT_PICKER_PREFERENCE_KEY)!!.apply {
             onPreferenceClickListener = this@MainFragment
         }
-        contact = getContactInfo(context!!)
         updateMessageSummary()
         updateContactPickerSummary()
     }
@@ -101,6 +113,14 @@ class MainFragment :
         }
     }
 
+    private fun initAboutSection() {
+        findPreference<Preference>(SOURCE_CODE_KEY)!!.apply {
+            onPreferenceClickListener = this@MainFragment
+        }
+
+        findPreference<Preference>(APP_VERSION_KEY)!!.summary = BuildConfig.VERSION_NAME
+    }
+
     private fun updateMessageSummary() {
         messageEditTextPreference.summary = sharedPreferences.getString(messageEditTextPreference.key, "Hello from Quick Message!")
     }
@@ -113,5 +133,8 @@ class MainFragment :
         private const val CONTACT_PICKER_PREFERENCE_KEY = "pick_contact_preference_key"
         private const val MESSAGE_PREFERENCE_KEY = "message_key"
         private const val SEND_MESSAGE_KEY = "send_message_key"
+
+        private const val SOURCE_CODE_KEY = "source_code_key"
+        private const val APP_VERSION_KEY = "app_version_key"
     }
 }
