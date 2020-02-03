@@ -42,8 +42,7 @@ class MainFragment :
             }
             SEND_MESSAGE_KEY -> {
                 if (!contact?.normalizedNumber.isNullOrEmpty()) {
-                    val message = preference.sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!")
-                    sendMessage(context!!, contact, message)
+                    sendMessage(context!!, contact)
                 }
                 true
             }
@@ -141,7 +140,7 @@ class MainFragment :
 
     companion object {
         private const val CONTACT_PICKER_PREFERENCE_KEY = "pick_contact_preference_key"
-        private const val MESSAGE_PREFERENCE_KEY = "message_key"
+        const val MESSAGE_PREFERENCE_KEY = "message_key"
         const val REQUIRE_CONFIRMATION_PREFERENCE_KEY = "require_confirmation_key"
         private const val SEND_MESSAGE_KEY = "send_message_key"
 

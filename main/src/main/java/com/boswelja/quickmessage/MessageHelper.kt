@@ -5,6 +5,7 @@ import android.provider.ContactsContract
 import android.telephony.SmsManager
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import com.boswelja.quickmessage.MainFragment.Companion.MESSAGE_PREFERENCE_KEY
 import com.boswelja.quickmessage.MainFragment.Companion.REQUIRE_CONFIRMATION_PREFERENCE_KEY
 
 object MessageHelper {
@@ -45,9 +46,10 @@ object MessageHelper {
         return contact
     }
 
-    fun sendMessage(context: Context, contact: Contact?, message: String?) {
+    fun sendMessage(context: Context, contact: Contact?) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val message = sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!")
         if (contact != null && !message.isNullOrEmpty()) {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             if (sharedPreferences.getBoolean(REQUIRE_CONFIRMATION_PREFERENCE_KEY, true)) {
                 AlertDialog.Builder(context).apply {
                     setTitle(R.string.confirm_dialog_title)
