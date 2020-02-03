@@ -6,7 +6,10 @@
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="BaseTheme" />
+
+    <style name="AppTheme.ConfirmDialog" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="title">@string/confirm_dialog_title</item>
+    </style>
 
 </resources>
