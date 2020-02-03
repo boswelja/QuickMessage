@@ -3,7 +3,9 @@ package com.boswelja.quickmessage
 import android.content.Context
 import android.provider.ContactsContract
 import android.telephony.SmsManager
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import com.boswelja.quickmessage.MainFragment.Companion.REQUIRE_CONFIRMATION_PREFERENCE_KEY
 
 object MessageHelper {
 
@@ -43,17 +45,36 @@ object MessageHelper {
         return contact
     }
 
-    fun sendMessage(contact: Contact?, message: String?) {
+    fun sendMessage(context: Context, contact: Contact?, message: String?) {
         if (contact != null && !message.isNullOrEmpty()) {
-            SmsManager.getDefault().also {
-                it.sendTextMessage(
-                    contact.normalizedNumber,
-                    null,
-                    message,
-                    null,
-                    null
-                )
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            if (sharedPreferences.getBoolean(REQUIRE_CONFIRMATION_PREFERENCE_KEY, true)) {
+                AlertDialog.Builder(context).apply {
+                    setTitle(R.string.confirm_dialog_title)
+                    setMessage(context.getString(R.string.confirm_dialog_message, message, contact.name ?: contact.normalizedNumber))
+                    setPositiveButton(R.string.dialog_send) { _, _ ->
+                        sendSms(contact.normalizedNumber, message)
+                    }
+                    setNegativeButton(R.string.dialog_cancel) { _, _ -> }
+                }.also {
+                    it.show()
+                }
+
+            } else {
+                sendSms(contact.normalizedNumber, message)
             }
+        }
+    }
+
+    private fun sendSms(number: String, message: String) {
+        SmsManager.getDefault().also {
+            it.sendTextMessage(
+                number,
+                null,
+                message,
+                null,
+                null
+            )
         }
     }
 }

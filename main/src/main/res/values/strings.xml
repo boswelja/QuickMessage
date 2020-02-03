@@ -4,6 +4,7 @@
     <string name="source_code_url">https://github.com/boswelja/QuickMessage</string>
 
     <string name="dialog_ok">OK</string>
+    <string name="dialog_send">Send</string>
     <string name="dialog_cancel">Cancel</string>
 
     <string name="pref_category_main_title">@string/app_name</string>
@@ -19,4 +20,7 @@
     <string name="phone_number_dialog_title">Send to</string>
     <string name="phone_number_dialog_message">Enter a phone number to send a message to</string>
     <string name="phone_number_dialog_error">Enter a valid phone number</string>
+
+    <string name="confirm_dialog_title">Confirm Sending Message</string>
+    <string name="confirm_dialog_message">This will send \"%s\" to %s, are you sure?</string>
 </resources>
