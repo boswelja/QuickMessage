@@ -2,13 +2,11 @@ package com.boswelja.quickmessage
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import android.net.Uri
 import android.provider.ContactsContract
-import android.telephony.SmsManager
-import androidx.core.content.ContextCompat
+import android.util.Log
 import androidx.preference.PreferenceManager
 import com.boswelja.quickmessage.MainFragment.Companion.MESSAGE_PREFERENCE_KEY
-import com.boswelja.quickmessage.MainFragment.Companion.REQUIRE_CONFIRMATION_PREFERENCE_KEY
 
 object MessageHelper {
 
@@ -48,32 +46,23 @@ object MessageHelper {
         return contact
     }
 
-    fun sendMessage(context: Context, contact: Contact?) {
+    fun sendMessage(context: Context, contact: Contact?): Boolean {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val message = sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!")
-        if (contact != null && !message.isNullOrEmpty()) {
-            if (sharedPreferences.getBoolean(REQUIRE_CONFIRMATION_PREFERENCE_KEY, true)) {
-
-                Intent(context, ActionService::class.java).apply {
-                    action = ActionService.ACTION_SEND_MESSAGE
-                }.also {
-                    ContextCompat.startForegroundService(context, it)
-                }
-            } else {
-                sendSms(contact.normalizedNumber, message)
-            }
+        val message = sharedPreferences.getString(MESSAGE_PREFERENCE_KEY, "Hello from Quick Message!") ?: "Hello from Quick Message!"
+        if (contact != null && message.isNotEmpty()) {
+            sendSms(context, contact.normalizedNumber, message)
+            return true
         }
+        return false
     }
 
-    fun sendSms(number: String, message: String) {
-        SmsManager.getDefault().also {
-            it.sendTextMessage(
-                number,
-                null,
-                message,
-                null,
-                null
-            )
+    private fun sendSms(context: Context, number: String, message: String) {
+        Intent(Intent.ACTION_SENDTO).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            data = Uri.fromParts("smsto", number, null)
+            putExtra("sms_body", message)
+        }.also {
+            context.startActivity(it)
         }
     }
 }

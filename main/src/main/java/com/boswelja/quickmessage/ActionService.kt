@@ -7,29 +7,19 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.boswelja.quickmessage.MessageHelper.getContactInfo
+import com.boswelja.quickmessage.MessageHelper.sendMessage
 
 class ActionService : Service() {
-
-    override fun onCreate() {
-        super.onCreate()
-        Log.d("ActionService", "Starting")
-    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(1401, createNotification())
-        Log.d("ActionService", "Handling work")
         when (intent?.action) {
             ACTION_SEND_MESSAGE -> {
-                Intent(this, ConfirmationActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }.also {
-                    startActivity(it)
-                }
-
+                sendMessage(this, getContactInfo(this))
             }
         }
         stopForeground(true)

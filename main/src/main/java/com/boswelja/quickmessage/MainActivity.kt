@@ -12,11 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (hasPermissions()) {
-            showMainFragment()
-        } else {
-            requestPermissions()
-        }
+        showMainFragment()
     }
 
     override fun onRequestPermissionsResult(
@@ -46,12 +42,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hasPermissions(): Boolean {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED)
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
     }
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS),
+            arrayOf(Manifest.permission.READ_CONTACTS),
             REQUEST_PERMISSION_CODE)
     }
 

@@ -36,14 +36,17 @@ class MainFragment :
                         startActivityForResult(it, 1001)
                     }
                 } else {
-                    PhoneNumberEditTextDialog(context!!).createAndShow()
+                    PhoneNumberEditTextDialog(context!!)
+                        .createAndShow()
+                        .setOnDismissListener {
+                            contact = getContactInfo(context!!)
+                            updateContactPickerSummary()
+                        }
                 }
                 true
             }
             SEND_MESSAGE_KEY -> {
-                if (!contact?.normalizedNumber.isNullOrEmpty()) {
-                    sendMessage(context!!, contact)
-                }
+                sendMessage(context!!, contact)
                 true
             }
             SOURCE_CODE_KEY -> {
@@ -141,7 +144,6 @@ class MainFragment :
     companion object {
         private const val CONTACT_PICKER_PREFERENCE_KEY = "pick_contact_preference_key"
         const val MESSAGE_PREFERENCE_KEY = "message_key"
-        const val REQUIRE_CONFIRMATION_PREFERENCE_KEY = "require_confirmation_key"
         private const val SEND_MESSAGE_KEY = "send_message_key"
 
         private const val SOURCE_CODE_KEY = "source_code_key"

@@ -16,11 +16,6 @@
             android:title="@string/pref_edit_message_title"
             android:icon="@drawable/pref_ic_message" />
 
-        <androidx.preference.CheckBoxPreference
-            android:defaultValue="true"
-            android:key="require_confirmation_key"
-            android:title="@string/pref_requires_confirmation_title" />
-
         <androidx.preference.Preference
             android:key="send_message_key"
             android:title="@string/pref_send_message_title"
