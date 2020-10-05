@@ -7,10 +7,19 @@ class SendButton extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ElevatedButton(
-          onPressed: () => {
-            requestSend()
-          },
+          onPressed: () => trySendMessage(context),
           child: Text('Send'))
     );
+  }
+
+  void trySendMessage(BuildContext context) async {
+    var result = await requestSend();
+    if (!result)
+      showFailedSnackBar(context);
+  }
+
+  void showFailedSnackBar(BuildContext context) {
+    final snackBar = SnackBar(content: Text('Failed to send message'));
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
