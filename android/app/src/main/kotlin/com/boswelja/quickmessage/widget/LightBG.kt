@@ -1,4 +1,4 @@
-package com.boswelja.quick_message.widget
+package com.boswelja.quickmessage.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,10 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViews
-import com.boswelja.quick_message.ActionService
-import com.boswelja.quick_message.R
+import com.boswelja.quickmessage.ActionService
+import com.boswelja.quickmessage.R
 
-class DarkBG : AppWidgetProvider() {
+class LightBG : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -30,7 +30,7 @@ class DarkBG : AppWidgetProvider() {
             }
 
             val remoteViews = RemoteViews(context.packageName,
-                R.layout.widget_quick_message_darkbg
+                R.layout.widget_quick_message_lightbg
             ).apply {
                 setOnClickPendingIntent(R.id.button, sendMessagePendingIntent)
             }

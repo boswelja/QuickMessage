@@ -1,4 +1,4 @@
-package com.boswelja.quick_message.widget
+package com.boswelja.quickmessage.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,8 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.RemoteViews
-import com.boswelja.quick_message.R
-import com.boswelja.quick_message.ActionService
+import com.boswelja.quickmessage.R
+import com.boswelja.quickmessage.ActionService
 
 class ColoredBG : AppWidgetProvider() {
 

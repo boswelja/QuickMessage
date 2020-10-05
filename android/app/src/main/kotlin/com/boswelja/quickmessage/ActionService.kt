@@ -1,4 +1,4 @@
-package com.boswelja.quick_message
+package com.boswelja.quickmessage
 
 import android.app.Notification
 import android.app.NotificationChannel
