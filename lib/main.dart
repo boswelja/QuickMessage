@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_message/message_builder.dart';
+import 'package:quick_message/send_inapp.dart';
 import 'package:quick_message/sender.dart';
 
 import 'contact_picker.dart';
@@ -32,15 +33,11 @@ class SetupPage extends StatelessWidget {
         title: Text("Quick Message"),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(vertical: 16),
         children: [
           SelectedContact(),
           MessageBuilder(),
-          ElevatedButton(
-            onPressed: () => {
-              requestSend()
-            },
-            child: Text('Send'))
+          SendButton()
         ],
       ),
     );

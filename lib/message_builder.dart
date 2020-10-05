@@ -29,17 +29,20 @@ class _MessageBuilder extends State<MessageBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Message'
-      ),
-      onSubmitted: (value) {
-        _prefs.then((prefs) => prefs.setString(messageKey, value));
-      },
-      textInputAction: TextInputAction.done,
-      autocorrect: true,
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: TextField(
+        controller: _controller,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Message'
+        ),
+        onSubmitted: (value) {
+          _prefs.then((prefs) => prefs.setString(messageKey, value));
+        },
+        textInputAction: TextInputAction.done,
+        autocorrect: true,
+      )
     );
   }
 }

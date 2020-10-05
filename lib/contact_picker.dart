@@ -42,18 +42,18 @@ class _SelectedContact extends State<SelectedContact> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => getNewContact(),
-      child: Row(
-        children: [
-          Icon(
-              Icons.person_outlined
-          ),
-          if (contact != null)
-            buildContactSelectedWidget(contact)
-          else
-            buildNoContactWidget()
-        ],
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: contactPickerWidget(),
       ),
     );
+  }
+
+  Widget contactPickerWidget() {
+    if (contact != null)
+      return buildContactSelectedWidget(contact);
+    else
+      return buildNoContactWidget();
   }
 
   Widget buildContactSelectedWidget(Contact contact) {
@@ -61,7 +61,14 @@ class _SelectedContact extends State<SelectedContact> {
   }
 
   Widget buildNoContactWidget() {
-    return Text("Select a Contact");
+    return Row(
+      children: [
+        Icon(
+            Icons.person_outlined
+        ),
+        Text("Select a Contact")
+      ],
+    );
   }
 
   void getNewContact() async {
