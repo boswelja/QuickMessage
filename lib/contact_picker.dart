@@ -73,11 +73,15 @@ class _SelectedContact extends State<SelectedContact> {
 
   void getNewContact() async {
     try {
-      Contact newContact = await ContactsService.openDeviceContactPicker();
-      setState(() {
-        _prefs.then((prefs) => prefs.setString(numberKey, newContact.phones.first.value));
-        contact = newContact;
-      });
+      if (await Permission.contacts.request().isGranted) {
+        Contact newContact = await ContactsService.openDeviceContactPicker();
+        setState(() {
+          _prefs.then((prefs) => prefs.setString(numberKey, newContact.phones.first.value));
+          contact = newContact;
+        });
+      } else {
+        print("Failed to get contact");
+      }
     } catch(ignored) {
       print("Failed to get contact");
     }

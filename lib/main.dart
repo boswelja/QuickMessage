@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_message/message_builder.dart';
 import 'package:quick_message/send_inapp.dart';
-import 'package:quick_message/sender.dart';
 
 import 'contact_picker.dart';
 
