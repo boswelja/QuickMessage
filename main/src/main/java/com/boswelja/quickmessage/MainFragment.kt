@@ -126,7 +126,7 @@ class MainFragment :
             onPreferenceClickListener = this@MainFragment
         }
 
-        findPreference<Preference>(APP_VERSION_KEY)!!.summary = BuildConfig.VERSION_NAME
+        findPreference<Preference>(APP_VERSION_KEY)!!.summary = "1.0" // TODO BuildConfig again
     }
 
     private fun updateMessageSummary() {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.boswelja.quickmessage">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -12,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+                android:name=".MainActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +25,9 @@
             android:name=".ActionService"
             android:exported="false" />
 
-        <receiver android:name=".widget.ColoredBG">
+        <receiver
+                android:name=".widget.ColoredBG"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -33,7 +36,8 @@
                 android:resource="@xml/widget_coloredbg_info" />
         </receiver>
 
-        <receiver android:name=".widget.DarkBG">
+        <receiver android:name=".widget.DarkBG"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -42,7 +46,8 @@
                 android:resource="@xml/widget_darkbg_info" />
         </receiver>
 
-        <receiver android:name=".widget.LightBG">
+        <receiver android:name=".widget.LightBG"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
