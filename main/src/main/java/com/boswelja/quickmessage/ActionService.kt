@@ -22,7 +22,12 @@ class ActionService : Service() {
                 sendMessage(this, getContactInfo(this))
             }
         }
-        stopForeground(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            @Suppress("DEPRECATION")
+            stopForeground(true)
+        }
         stopSelf()
         return super.onStartCommand(intent, flags, startId)
     }

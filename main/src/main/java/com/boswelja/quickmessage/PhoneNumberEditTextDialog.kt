@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.preference.PreferenceManager
 import com.boswelja.quickmessage.MessageHelper.PHONE_NUMBER_KEY
+import androidx.core.content.edit
 
 class PhoneNumberEditTextDialog(context: Context) : AlertDialog.Builder(context) {
 
@@ -26,9 +27,9 @@ class PhoneNumberEditTextDialog(context: Context) : AlertDialog.Builder(context)
         return show().also {
             it.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { _ ->
                 val number = phoneNumberField.text.toString()
-                if (number.matches("^[+]?[0-9]{10,13}\$".toRegex())) {
+                if (number.matches("^[+]?[0-9]{10,13}$".toRegex())) {
                     errorMessageView.visibility = View.GONE
-                    sharedPreferences.edit().putString(PHONE_NUMBER_KEY, number).apply()
+                    sharedPreferences.edit { putString(PHONE_NUMBER_KEY, number) }
                     it.dismiss()
                 } else {
                     errorMessageView.visibility = View.VISIBLE

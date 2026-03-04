@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.boswelja.quickmessage.MessageHelper.CONTACT_LOOKUP_KEY
 import com.boswelja.quickmessage.MessageHelper.getContactInfo
 import com.boswelja.quickmessage.MessageHelper.sendMessage
+import androidx.core.content.edit
 
 class MainFragment :
     PreferenceFragmentCompat(),
@@ -28,30 +29,30 @@ class MainFragment :
     private lateinit var contactPickerPreference: Preference
     private lateinit var messageEditTextPreference: EditTextPreference
 
-    override fun onPreferenceClick(preference: Preference?): Boolean {
-        return when (preference?.key) {
+    override fun onPreferenceClick(preference: Preference): Boolean {
+        return when (preference.key) {
             CONTACT_PICKER_PREFERENCE_KEY -> {
-                if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                     Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI).also {
                         startActivityForResult(it, 1001)
                     }
                 } else {
-                    PhoneNumberEditTextDialog(context!!)
+                    PhoneNumberEditTextDialog(requireContext())
                         .createAndShow()
                         .setOnDismissListener {
-                            contact = getContactInfo(context!!)
+                            contact = getContactInfo(requireContext())
                             updateContactPickerSummary()
                         }
                 }
                 true
             }
             SEND_MESSAGE_KEY -> {
-                sendMessage(context!!, contact)
+                sendMessage(requireContext(), contact)
                 true
             }
             SOURCE_CODE_KEY -> {
                 Intent(Intent.ACTION_VIEW, getString(R.string.source_code_url).toUri()).also {
-                    if (it.resolveActivity(activity!!.packageManager) != null) {
+                    if (it.resolveActivity(requireActivity().packageManager) != null) {
                         startActivity(it)
                     }
                 }
@@ -61,11 +62,11 @@ class MainFragment :
         }
     }
 
-    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-        return when (preference?.key) {
+    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
+        return when (preference.key) {
             MESSAGE_PREFERENCE_KEY -> {
                 if (newValue is String && newValue.isNotEmpty()) {
-                    sharedPreferences.edit().putString(preference.key, newValue).apply()
+                    sharedPreferences.edit { putString(preference.key, newValue) }
                     updateMessageSummary()
                 }
                 false
@@ -77,11 +78,11 @@ class MainFragment :
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        sharedPreferences = preferenceManager.sharedPreferences
+        sharedPreferences = preferenceManager.sharedPreferences!!
 
         addPreferencesFromResource(R.xml.main_preferences)
 
-        contact = getContactInfo(context!!)
+        contact = getContactInfo(requireContext())
 
         initAboutSection()
 
@@ -109,11 +110,11 @@ class MainFragment :
                     if (cursor?.moveToFirst() == true) {
                         val lookupKey = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.LOOKUP_KEY))
                         if (!lookupKey.isNullOrEmpty()) {
-                            sharedPreferences.edit().putString(CONTACT_LOOKUP_KEY, lookupKey).apply()
+                            sharedPreferences.edit { putString(CONTACT_LOOKUP_KEY, lookupKey) }
                         }
                     }
                     cursor?.close()
-                    contact = getContactInfo(context!!)
+                    contact = getContactInfo(requireContext())
                     updateContactPickerSummary()
                 }
             }
@@ -126,7 +127,7 @@ class MainFragment :
             onPreferenceClickListener = this@MainFragment
         }
 
-        findPreference<Preference>(APP_VERSION_KEY)!!.summary = "1.0" // TODO BuildConfig again
+        findPreference<Preference>(APP_VERSION_KEY)!!.summary = "2.0" // TODO BuildConfig again
     }
 
     private fun updateMessageSummary() {

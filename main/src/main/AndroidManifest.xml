@@ -23,6 +23,7 @@
 
         <service
             android:name=".ActionService"
+            android:foregroundServiceType="shortService"
             android:exported="false" />
 
         <receiver

@@ -25,7 +25,7 @@ class LightBG : AppWidgetProvider() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     PendingIntent.getForegroundService(context, 0, it, 0)
                 } else {
-                    PendingIntent.getService(context, 0, it, 0)
+                    PendingIntent.getService(context, 0, it, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 }
             }
 
