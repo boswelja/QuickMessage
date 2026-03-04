@@ -4,6 +4,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/statusBarColor</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowLightStatusBar">@bool/lightSystemBars</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />
